@@ -17,8 +17,6 @@ function askLims() {
                }
             }
             
-                    console.log(lightsCoor);
-            
 
         },
         error: function (jqXHR, textStatus, errorThrown)
