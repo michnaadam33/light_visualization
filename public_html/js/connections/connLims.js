@@ -21,6 +21,7 @@ function askLims() {
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
+            $('#container').html("<h1>Error servera lims</h1>");
             console.log(jqXHR);
         }
     });

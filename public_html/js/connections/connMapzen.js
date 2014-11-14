@@ -15,6 +15,7 @@ function askMapzenRoads(p1, p2) {
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
+            $('#container').html("<h1>Error servera mapzen</h1>");
             console.log(jqXHR);
         }
     }
