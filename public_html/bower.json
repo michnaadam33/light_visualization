@@ -1,0 +1,22 @@
+{
+  "name": "light_visualization",
+  "version": "0.0.0",
+  "homepage": "https://github.com/michnaadam33/light_visualization",
+  "main": "index.html",
+  "authors": [
+    "Adam Michna"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "three.js": "*"
+  }
+}
