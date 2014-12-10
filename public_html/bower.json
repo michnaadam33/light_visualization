@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "jquery": "~2.1.1",
-    "three.js": "*"
+    "three.js": "*",
+    "bootstrap": "~3.3.1"
   }
 }
