@@ -16,30 +16,30 @@ var worldWidth = 100, worldDepth = 100,
 
 var clock = new THREE.Clock();
 $.when(askLims(),
-    askMapzenRoads(582459, 355316),
-    askMapzenRoads(582460, 355316),
-    askMapzenRoads(582460, 355317),
-    askMapzenRoads(582460, 355318),
-    askMapzenRoads(582460, 355319),
-    askMapzenRoads(582461, 355316),
-    askMapzenRoads(582461, 355317),
-    askMapzenRoads(582461, 355318),
-    askMapzenRoads(582461, 355319),
-    askMapzenRoads(582462, 355316),
-    askMapzenRoads(582462, 355317),
-    askMapzenRoads(582462, 355318),
-    askMapzenRoads(582462, 355319),
-    askMapzenRoads(582463, 355316),
-    askMapzenRoads(582463, 355317),
-    askMapzenRoads(582463, 355318),
-    askMapzenRoads(582463, 355319),
-    askMapzenRoads(582464, 355316),
-    askMapzenRoads(582464, 355317),
-    askMapzenRoads(582464, 355318),
-    askMapzenRoads(582464, 355319),
-    askMapzenRoads(582465, 355316),
-    askMapzenRoads(582465, 355317),
-    askMapzenRoads(582465, 355318),
+    /*askMapzenRoads(582459, 355316),
+     askMapzenRoads(582460, 355316),
+     askMapzenRoads(582460, 355317),
+     askMapzenRoads(582460, 355318),
+     askMapzenRoads(582460, 355319),
+     askMapzenRoads(582461, 355316),
+     askMapzenRoads(582461, 355317),
+     askMapzenRoads(582461, 355318),
+     askMapzenRoads(582461, 355319),
+     askMapzenRoads(582462, 355316),
+     askMapzenRoads(582462, 355317),
+     askMapzenRoads(582462, 355318),
+     askMapzenRoads(582462, 355319),
+     askMapzenRoads(582463, 355316),
+     askMapzenRoads(582463, 355317),
+     askMapzenRoads(582463, 355318),
+     askMapzenRoads(582463, 355319),
+     askMapzenRoads(582464, 355316),
+     askMapzenRoads(582464, 355317),
+     askMapzenRoads(582464, 355318),
+     askMapzenRoads(582464, 355319),
+     askMapzenRoads(582465, 355316),
+     askMapzenRoads(582465, 355317),
+     askMapzenRoads(582465, 355318),*/
     askMapzenRoads(582465, 355319)
 ).done(function () {
         console.log("Start");
@@ -75,11 +75,13 @@ function init() {
     var pyGeometry = new THREE.PlaneGeometry(100, 100);
     //pyGeometry.faces[ 0 ].vertexColors = [light, light, light];
     //pyGeometry.faces[ 1 ].vertexColors = [light, light, light];
-    pyGeometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
-    pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
-    pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
+    pyGeometry.faceVertexUvs[0][0][1].y = 0.5;
+    pyGeometry.faceVertexUvs[0][1][0].y = 0.5;
+    pyGeometry.faceVertexUvs[0][1][1].y = 0.5;
     pyGeometry.applyMatrix(matrix.makeRotationX(-Math.PI / 2));
     pyGeometry.applyMatrix(matrix.makeTranslation(0, 50, 0));
+    //
+    placeLights(scene);
     //
 
     var geometry = new THREE.Geometry();
@@ -89,7 +91,6 @@ function init() {
     var lightsPoints = new THREE.Geometry();
     var dummy = new THREE.Mesh();
     for (var z = 0; z < worldDepth; z++) {
-
         for (var x = 0; x < worldWidth; x++) {
 
 
@@ -106,9 +107,9 @@ function init() {
             else {
                 geometry.merge(pyGeometry, matrix);
             }
-            if (isHereLight(x, z)) {
-                lightsPoints.merge(lightPoints, matrix);
-            }
+            /*if (isHereLight(x, z)) {
+             lightsPoints.merge(lightPoints, matrix);
+             }*/
 
 
         }
@@ -121,14 +122,19 @@ function init() {
     textureEarth.minFilter = THREE.LinearMipMapLinearFilter;
     textureRoad.magFilter = THREE.NearestFilter;
     textureRoad.minFilter = THREE.LinearMipMapLinearFilter;
-    var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({map: textureEarth, ambient: 0xbbbbbb, vertexColors: THREE.VertexColors}));
+    var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+        map: textureEarth,
+        ambient: 0xbbbbbb,
+        vertexColors: THREE.VertexColors
+    }));
     scene.add(mesh);
-    var mesh2 = new THREE.Mesh(road, new THREE.MeshLambertMaterial({map: textureRoad, ambient: 0xbbbbbb, vertexColors: THREE.VertexColors}));
+    var mesh2 = new THREE.Mesh(road, new THREE.MeshLambertMaterial({
+        map: textureRoad,
+        ambient: 0xbbbbbb,
+        vertexColors: THREE.VertexColors
+    }));
     scene.add(mesh2);
-    var material = new THREE.MeshBasicMaterial({color: 0xffffff00});
-    var mesh3 = new THREE.Mesh(lightsPoints, material);
-    mesh3.position.y = 100;
-    scene.add(mesh3);
+
 
     var material = new THREE.MeshBasicMaterial({color: 0xf1f1f1});
     var meshPlace = new THREE.Mesh(places, material);
@@ -183,6 +189,47 @@ function render() {
     controls.update(clock.getDelta());
     renderer.render(scene, camera);
 }
+
+function placeLights(scene) {
+    /*var material = new THREE.MeshBasicMaterial({color: 0xffffff00});
+     var mesh3 = new THREE.Mesh(lightsPoints, material);
+     mesh3.position.y = 100;
+     scene.add(mesh3);*/
+
+    /*for (var i in lightsCoorData) {
+     var elem = lightsCoorData[i];
+     if(elem.type == "l"){
+     $.when(askLimsDet(elem)).done(function(){
+     //lightsCoor.push({lon : elem.coordinates.lon*1000000-poslon, alt: elem.coordinates.alt, lat: elem.coordinates.lat*1000000-poslat})
+     });
+     }
+     }*/
+
+    $.when.apply(null, lightsCoorData.map(function (lightCoorData) {
+        if (lightCoorData.type == "l") {
+            return askLimsDet(lightCoorData);
+        }
+    })).done(function () {
+        console.log(window.lightsCoor);
+        for (var i in window.lightsCoor) {
+            var geometry = new THREE.SphereGeometry(5, 32, 32);
+            var material = new THREE.MeshBasicMaterial({color: getColor(lightsCoor[i].params)});
+            var lightObj = new THREE.Mesh(geometry, material);
+
+            var lon = parseInt(lightsCoor[i].lon);
+            var lat = parseInt(lightsCoor[i].lat);
+            lightObj.position.set(lon, 100, lat);
+            scene.add(lightObj);
+
+
+        }
+    });
+
+
+    var light = new THREE.PointLight(0xffffff);
+    light.position.set(-10, 100, 10);
+    scene.add(light);
+}
 function isHereLight(x, z) {
     if (lightsCoor.length == 0) {
         console.log("lights Corr ERRoR");
@@ -227,7 +274,7 @@ function isHereRoute(x, z) {
     return false;
 }
 
-function isHerePlaces(x, z){
+function isHerePlaces(x, z) {
     if (placesCoor.length == 0) {
         console.log("places Corr ERRoR");
     }
@@ -254,4 +301,30 @@ function isHerePlaces(x, z){
 
     }
     return false;
+}
+function getColor(param) {
+    console.log(param);
+    if (param == 0) {
+        return 0;
+    } else if (param > 0) {
+        return 0x7f6000;
+    } else if (param > 10) {
+        return 0xb28700;
+    } else if (param > 20) {
+        return  0xcc9a00;
+    } else if (param > 30) {
+        return 0xffc100;
+    } else if (param > 40) {
+        return 0xffcd32;
+    } else if (param > 50) {
+        return 0xffd966;
+    } else if (param > 60) {
+        return 0xffe07f;
+    } else if (param > 70) {
+        return 0xffecb2;
+    } else if (param > 80) {
+        return 0xfff2cc;
+    } else {
+        return 0xffffff;
+    }
 }
