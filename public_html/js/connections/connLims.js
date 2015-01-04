@@ -22,7 +22,7 @@ function askLims() {
 }
 
 function askLimsDet(elem){
-    var url = "http://awing.kis.agh.edu.pl:5001/1/" +elem.did + "/status";
+    var url = "http://awing.kis.agh.edu.pl:5001/"+elem.cid+"/" +elem.did + "/status";
     return $.ajax({
         url: url,
         type: "GET",

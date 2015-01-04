@@ -191,26 +191,11 @@ function render() {
 }
 
 function placeLights(scene) {
-    /*var material = new THREE.MeshBasicMaterial({color: 0xffffff00});
-     var mesh3 = new THREE.Mesh(lightsPoints, material);
-     mesh3.position.y = 100;
-     scene.add(mesh3);*/
-
-    /*for (var i in lightsCoorData) {
-     var elem = lightsCoorData[i];
-     if(elem.type == "l"){
-     $.when(askLimsDet(elem)).done(function(){
-     //lightsCoor.push({lon : elem.coordinates.lon*1000000-poslon, alt: elem.coordinates.alt, lat: elem.coordinates.lat*1000000-poslat})
-     });
-     }
-     }*/
-
     $.when.apply(null, lightsCoorData.map(function (lightCoorData) {
         if (lightCoorData.type == "l") {
             return askLimsDet(lightCoorData);
         }
     })).done(function () {
-        console.log(window.lightsCoor);
         for (var i in window.lightsCoor) {
             var geometry = new THREE.SphereGeometry(5, 32, 32);
             var material = new THREE.MeshBasicMaterial({color: getColor(lightsCoor[i].params)});
@@ -303,26 +288,25 @@ function isHerePlaces(x, z) {
     return false;
 }
 function getColor(param) {
-    console.log(param);
     if (param == 0) {
         return 0;
-    } else if (param > 0) {
+    } else if (param < 10) {
         return 0x7f6000;
-    } else if (param > 10) {
+    } else if (param <20) {
         return 0xb28700;
-    } else if (param > 20) {
+    } else if (param < 30) {
         return  0xcc9a00;
-    } else if (param > 30) {
+    } else if (param < 40) {
         return 0xffc100;
-    } else if (param > 40) {
+    } else if (param < 50) {
         return 0xffcd32;
-    } else if (param > 50) {
+    } else if (param < 60) {
         return 0xffd966;
-    } else if (param > 60) {
+    } else if (param < 70) {
         return 0xffe07f;
-    } else if (param > 70) {
+    } else if (param < 80) {
         return 0xffecb2;
-    } else if (param > 80) {
+    } else if (param < 90) {
         return 0xfff2cc;
     } else {
         return 0xffffff;
