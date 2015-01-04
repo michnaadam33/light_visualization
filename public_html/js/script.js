@@ -16,7 +16,7 @@ var worldWidth = 100, worldDepth = 100,
 
 var clock = new THREE.Clock();
 $.when(askLims(),
-    /*askMapzenRoads(582459, 355316),
+    askMapzenRoads(582459, 355316),
      askMapzenRoads(582460, 355316),
      askMapzenRoads(582460, 355317),
      askMapzenRoads(582460, 355318),
@@ -39,7 +39,7 @@ $.when(askLims(),
      askMapzenRoads(582464, 355319),
      askMapzenRoads(582465, 355316),
      askMapzenRoads(582465, 355317),
-     askMapzenRoads(582465, 355318),*/
+     askMapzenRoads(582465, 355318),
     askMapzenRoads(582465, 355319)
 ).done(function () {
         console.log("Start");
@@ -52,7 +52,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 20000);
     camera.position.y = 100;
     controls = new THREE.FirstPersonControls(camera);
-    controls.movementSpeed = 1000;
+    controls.movementSpeed = 500;
     controls.lookSpeed = 0.125;
     controls.lookVertical = true;
     controls.constrainVertical = true;
@@ -107,10 +107,6 @@ function init() {
             else {
                 geometry.merge(pyGeometry, matrix);
             }
-            /*if (isHereLight(x, z)) {
-             lightsPoints.merge(lightPoints, matrix);
-             }*/
-
 
         }
 
@@ -154,7 +150,7 @@ function init() {
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.top = '0px';
     container.appendChild(stats.domElement);
-    //
+
 
     window.addEventListener('resize', onWindowResize, false);
 }
@@ -215,24 +211,10 @@ function placeLights(scene) {
     light.position.set(-10, 100, 10);
     scene.add(light);
 }
-function isHereLight(x, z) {
-    if (lightsCoor.length == 0) {
-        console.log("lights Corr ERRoR");
-    }
-    for (var i in lightsCoor) {
-        var lon = parseInt(lightsCoor[i].lon / 10);
-        var lat = parseInt(lightsCoor[i].lat / 10);
-        if (lon == x && lat == z) {
-            return true;
-        }
-    }
-    return false;
-}
 function isHereRoute(x, z) {
     if (routeCoor.length == 0) {
         console.log("No outeCoor ERRoR");
     }
-    //if(z > 10) return false; // test
     for (var i in routeCoor) {
 
         var lastPoint = routeCoor[i][0];
