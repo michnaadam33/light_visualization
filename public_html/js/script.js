@@ -1,6 +1,5 @@
 /*//TODO List
  -textury drogi budynki
- -zatrzymywanie na sterowanie
  -pisać o standardzie kodowania
  -pisać o kontroli
  -pisać jquery
@@ -15,13 +14,11 @@ if (!Detector.webgl) {
     document.getElementById('container').innerHTML = "";
 }
 
-var fogExp2 = true;
 var container, stats;
 var camera, controls, scene, renderer;
-var mesh, mat;
+var mesh;
 var worldWidth = 100, worldDepth = 100,
     worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
-//data = generateHeight(worldWidth, worldDepth);
 
 var clock = new THREE.Clock();
 $.when(askLims(),
@@ -71,10 +68,7 @@ function init() {
     scene.fog = new THREE.FogExp2(0xffffff, 0.00015);
     // sides
 
-    var light = new THREE.Color(0xffffff);
-    var shadow = new THREE.Color(0x505050);
     var matrix = new THREE.Matrix4();
-    var lightPoints = new THREE.BoxGeometry(10, 10, 10);
     var pyGeometryRout = new THREE.PlaneGeometry(100, 100);
     pyGeometryRout.applyMatrix(matrix.makeRotationX(-Math.PI / 2));
     pyGeometryRout.applyMatrix(matrix.makeTranslation(0, 50, 0));
@@ -82,8 +76,6 @@ function init() {
     pyGeometryPlace.applyMatrix(matrix.makeRotationX(-Math.PI / 2));
     pyGeometryPlace.applyMatrix(matrix.makeTranslation(0, 50, 0));
     var pyGeometry = new THREE.PlaneGeometry(100, 100);
-    //pyGeometry.faces[ 0 ].vertexColors = [light, light, light];
-    //pyGeometry.faces[ 1 ].vertexColors = [light, light, light];
     pyGeometry.faceVertexUvs[0][0][1].y = 0.5;
     pyGeometry.faceVertexUvs[0][1][0].y = 0.5;
     pyGeometry.faceVertexUvs[0][1][1].y = 0.5;
@@ -97,8 +89,6 @@ function init() {
     var road = new THREE.Geometry();
     var places = new THREE.Geometry();
 
-    var lightsPoints = new THREE.Geometry();
-    var dummy = new THREE.Mesh();
     for (var z = 0; z < worldDepth; z++) {
         for (var x = 0; x < worldWidth; x++) {
 
@@ -123,6 +113,7 @@ function init() {
 
     var textureRoad = THREE.ImageUtils.loadTexture('textures/minecraft/atlas2.png');
     var textureEarth = THREE.ImageUtils.loadTexture('textures/minecraft/atlas.png');
+    var textureWall = THREE.ImageUtils.loadTexture('textures/minecraft/atlas3.png');
     textureEarth.magFilter = THREE.NearestFilter;
     textureEarth.minFilter = THREE.LinearMipMapLinearFilter;
     textureRoad.magFilter = THREE.NearestFilter;
@@ -141,7 +132,11 @@ function init() {
     scene.add(mesh2);
 
 
-    var material = new THREE.MeshBasicMaterial({color: 0xf1f1f1});
+    var material = new THREE.MeshLambertMaterial({
+        map: textureWall,
+        ambient: 0xbbbbbb,
+        vertexColors: THREE.VertexColors
+    });
     var meshPlace = new THREE.Mesh(places, material);
     scene.add(meshPlace);
 
@@ -152,11 +147,12 @@ function init() {
     scene.add(directionalLight);
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(0xffffff);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight - $("#lv-top").outerHeight());
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
     stats = new Stats();
     stats.domElement.style.position = 'absolute';
+    stats.domElement.style.right = '0px';
     stats.domElement.style.top = '0px';
     container.appendChild(stats.domElement);
 
@@ -172,16 +168,6 @@ function onWindowResize() {
     controls.handleResize();
 }
 
-function loadTexture(path, callback) {
-
-    var image = new Image();
-    image.onload = function () {
-        callback();
-    };
-    image.src = path;
-    return image;
-}
-
 function animate() {
     requestAnimationFrame(animate);
     render();
@@ -189,7 +175,9 @@ function animate() {
 }
 
 $('#lv-control-modal').on('hidden.bs.modal', function (e) {
-    doRender = true;
+    setTimeout(function() {
+        doRender = true;
+    }, 100);
 })
 window.addEventListener('keydown', function (event) {
     var key = event.keyCode;
@@ -212,23 +200,22 @@ function placeLights(scene) {
         }
     })).done(function () {
         for (var i in window.lightsCoor) {
-            var geometry = new THREE.SphereGeometry(5, 32, 32);
+            var geometry = new THREE.SphereGeometry(50, 32, 32);
             var material = new THREE.MeshBasicMaterial({color: getColor(lightsCoor[i].params)});
             var lightObj = new THREE.Mesh(geometry, material);
 
             var lon = lightsCoor[i].lon * 10 - 5000;
             var lat = lightsCoor[i].lat * 10 - 5000;
-            lightObj.position.set(lon, 100, lat);
+            var alt = lightsCoor[i].alt + 100;
+            lightObj.position.set(lon, alt, lat);
             scene.add(lightObj);
 
-
+            //TODO
+            var light = new THREE.PointLight(0xff0000,1000);
+            light.position.set(lon, 10, lat);
+            scene.add(light);
         }
     });
-
-
-    var light = new THREE.PointLight(0xffffff);
-    light.position.set(-10, 100, 10);
-    scene.add(light);
 }
 function isHereRoute(x, z) {
     if (routeCoor.length == 0) {
