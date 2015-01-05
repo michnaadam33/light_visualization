@@ -1,36 +1,56 @@
-<html> 
-    <head> 
-        <title>Light visualization</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-    </head> 
-    <body>
-    <div id="lv-top">
-        <h1>Light visualization  <small>by Adam Michna</small></h1>
+<html>
+<head>
+    <title>Light visualization</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+</head>
+<body>
+<div id="lv-top">
+    <h1>Light visualization
+        <small>by Adam Michna</small>
+    </h1>
+    <p>Please space to show control panel.</p>
+</div>
+<div id="lv-container">
+    <div class="lv-loading text-center">
+        <h1>Processing...</h1>
+        <br><br><br><br><br><br>
+        <img src="img/loading.gif" alt="loading">
 
     </div>
-    <div id="lv-container">
-            <div class="lv-loading text-center">
-                <h1>Processing...</h1>
-                <br><br><br><br><br><br>
-                <img src="img/loading.gif" alt="loading">
 
+</div>
+
+<div class="modal fade" id="lv-control-modal" tabindex="-1" role="dialog" aria-labelledby="lvModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="lv-modal-title" id="lvModalLabel">Control panel</h4>
             </div>
+            <div class="modal-body">
+                <div id="lv-control-btn" class="row">
 
+                </div>
+            </div>
+        </div>
     </div>
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="bower_components/three.js/three.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="js/controls/FirstPersonControls.js"></script>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/three.js/three.min.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="js/controls/FirstPersonControls.js"></script>
 
 
-        <script src="js/ImprovedNoise.js"></script>
-        <script src="js/Detector.js"></script>
-        <script src="js/libs/stats.min.js"></script>
-        <script src="js/connections/connLims.js"></script>
-        <script src="js/connections/connMapzen.js"></script>
-        <script src="js/script.js"></script>
+<script src="js/ImprovedNoise.js"></script>
+<script src="js/Detector.js"></script>
+<script src="js/libs/stats.min.js"></script>
+<script src="js/connections/connLims.js"></script>
+<script src="js/connections/connMapzen.js"></script>
+<script src="js/control.js"></script>
+<script src="js/script.js"></script>
 
-    </body> 
+</body>
 </html>
