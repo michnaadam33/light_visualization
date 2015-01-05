@@ -1,3 +1,12 @@
+/*//TODO List
+ -textury drogi budynki
+ -zatrzymywanie na sterowanie
+ -pisać o standardzie kodowania
+ -pisać o kontroli
+ -pisać jquery
+ -pisać bootstrap
+ */
+var doRender = true;
 var poslon = 19972000;
 var poslat = 50066000;
 if (!Detector.webgl) {
@@ -17,29 +26,29 @@ var worldWidth = 100, worldDepth = 100,
 var clock = new THREE.Clock();
 $.when(askLims(),
     askMapzenRoads(582459, 355316),
-     askMapzenRoads(582460, 355316),
-     askMapzenRoads(582460, 355317),
-     askMapzenRoads(582460, 355318),
-     askMapzenRoads(582460, 355319),
-     askMapzenRoads(582461, 355316),
-     askMapzenRoads(582461, 355317),
-     askMapzenRoads(582461, 355318),
-     askMapzenRoads(582461, 355319),
-     askMapzenRoads(582462, 355316),
-     askMapzenRoads(582462, 355317),
-     askMapzenRoads(582462, 355318),
-     askMapzenRoads(582462, 355319),
-     askMapzenRoads(582463, 355316),
-     askMapzenRoads(582463, 355317),
-     askMapzenRoads(582463, 355318),
-     askMapzenRoads(582463, 355319),
-     askMapzenRoads(582464, 355316),
-     askMapzenRoads(582464, 355317),
-     askMapzenRoads(582464, 355318),
-     askMapzenRoads(582464, 355319),
-     askMapzenRoads(582465, 355316),
-     askMapzenRoads(582465, 355317),
-     askMapzenRoads(582465, 355318),
+    askMapzenRoads(582460, 355316),
+    askMapzenRoads(582460, 355317),
+    askMapzenRoads(582460, 355318),
+    askMapzenRoads(582460, 355319),
+    askMapzenRoads(582461, 355316),
+    askMapzenRoads(582461, 355317),
+    askMapzenRoads(582461, 355318),
+    askMapzenRoads(582461, 355319),
+    askMapzenRoads(582462, 355316),
+    askMapzenRoads(582462, 355317),
+    askMapzenRoads(582462, 355318),
+    askMapzenRoads(582462, 355319),
+    askMapzenRoads(582463, 355316),
+    askMapzenRoads(582463, 355317),
+    askMapzenRoads(582463, 355318),
+    askMapzenRoads(582463, 355319),
+    askMapzenRoads(582464, 355316),
+    askMapzenRoads(582464, 355317),
+    askMapzenRoads(582464, 355318),
+    askMapzenRoads(582464, 355319),
+    askMapzenRoads(582465, 355316),
+    askMapzenRoads(582465, 355317),
+    askMapzenRoads(582465, 355318),
     askMapzenRoads(582465, 355319)
 ).done(function () {
         console.log("Start");
@@ -174,16 +183,26 @@ function loadTexture(path, callback) {
 }
 
 function animate() {
-
     requestAnimationFrame(animate);
     render();
     stats.update();
 }
 
+$('#lv-control-modal').on('hidden.bs.modal', function (e) {
+    doRender = true;
+})
+window.addEventListener('keydown', function (event) {
+    var key = event.keyCode;
+    if (key == 32) {
+        $('#lv-control-modal').modal('show')
+        doRender = false;
+    }
+}, false);
 function render() {
-
-    controls.update(clock.getDelta());
-    renderer.render(scene, camera);
+    if (doRender === true) {
+        controls.update(clock.getDelta());
+        renderer.render(scene, camera);
+    }
 }
 
 function placeLights(scene) {
@@ -197,8 +216,8 @@ function placeLights(scene) {
             var material = new THREE.MeshBasicMaterial({color: getColor(lightsCoor[i].params)});
             var lightObj = new THREE.Mesh(geometry, material);
 
-            var lon = parseInt(lightsCoor[i].lon);
-            var lat = parseInt(lightsCoor[i].lat);
+            var lon = lightsCoor[i].lon * 10 - 5000;
+            var lat = lightsCoor[i].lat * 10 - 5000;
             lightObj.position.set(lon, 100, lat);
             scene.add(lightObj);
 
@@ -223,6 +242,7 @@ function isHereRoute(x, z) {
             var point = routeCoor[i][j];
             var lon = parseInt(point.lon / 10);
             var lat = parseInt(point.lat / 10);
+
             if (lon == x && lat == z) {
                 return true;
             }
@@ -274,10 +294,10 @@ function getColor(param) {
         return 0;
     } else if (param < 10) {
         return 0x7f6000;
-    } else if (param <20) {
+    } else if (param < 20) {
         return 0xb28700;
     } else if (param < 30) {
-        return  0xcc9a00;
+        return 0xcc9a00;
     } else if (param < 40) {
         return 0xffc100;
     } else if (param < 50) {
