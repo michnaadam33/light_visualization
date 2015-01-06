@@ -11,7 +11,6 @@ function askLims() {
         {
             lightsCoorData = data;
 
-
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
@@ -33,7 +32,7 @@ function askLimsDet(elem){
                 alt: elem.coordinates.alt,
                 lat: elem.coordinates.lat * 1000000 - poslat,
                 params: data.data[0].params[0].v
-            }
+            };
             window.lightsCoor.push(objLightPoint);
 
         },
@@ -44,7 +43,7 @@ function askLimsDet(elem){
     });
 }
 function askLimsDetStatus() {
-    var url = "http://awing.kis.agh.edu.pl:5001/1/1-30/detected"
+    var url = "http://awing.kis.agh.edu.pl:5001/1/1-30/detected";
     return $.ajax({
         url: url,
         type: "GET",

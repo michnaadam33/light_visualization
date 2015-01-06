@@ -181,11 +181,11 @@ function init() {
         setTimeout(function () {
             doRender = true;
         }, 100);
-    })
+    });
     window.addEventListener('keydown', function (event) {
         var key = event.keyCode;
         if (key == 32) {
-            $('#lv-control-modal').modal('show')
+            $('#lv-control-modal').modal('show');
             doRender = false;
         }
     }, false);
